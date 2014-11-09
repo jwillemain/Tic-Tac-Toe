@@ -37,10 +37,10 @@ def winner_check(board)
     [3, 6, 9], 
     [1, 5, 9],
     [3, 5, 7]]
-    winning_combos.each {|combo|}
+    winning_combos.each do |combo|
       if board.select { |k,v| v == 'X' }.keys == combo
         puts "You've won! Great job!"
-      if board.select { |k,v| v == 'O' }.keys == combo
+      elsif board.select { |k,v| v == 'O' }.keys == combo
         puts "Looks like the computer outsmarted you, try again!"
       else
         puts "Looks like you've tied, try again!"
