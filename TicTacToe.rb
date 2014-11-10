@@ -18,8 +18,10 @@ def empty_positions(board)
 end
 
 def player_turn(board)
-  puts "Let's play Tic Tac Toe! Pick a position 1-9 and try to beat me."
-  position = gets.chomp.to_i
+  begin
+    puts "Let's play Tic Tac Toe! Pick a position 1-9 and try to beat me."
+    position = gets.chomp.to_i
+  end until empty_positions(board).include?(position)
   board[position] = 'X'
 end
 
@@ -37,15 +39,15 @@ def winner_check(board)
     [3, 6, 9], 
     [1, 5, 9],
     [3, 5, 7]]
-    winning_combos.each do |combo|
-      if board.select { |k,v| v == 'X' }.keys == combo
-        puts "You've won! Great job!"
-      elsif board.select { |k,v| v == 'O' }.keys == combo
-        puts "Looks like the computer outsmarted you, try again!"
-      else
-        puts "Looks like you've tied, try again!"
-      end
+   winning_combos.each do |combo|
+    if board.select { |k,v| v == 'X' }.keys == combo
+      puts "You've won! Great job!"
+    elsif board.select { |k,v| v == 'O' }.keys == combo
+      puts "Looks like the computer outsmarted you, try again!"
+    else board.has_value?(' ')
+      puts ' '
     end
+  end
   nil
 end
 
@@ -54,6 +56,7 @@ def game_over?(board)
 end
 
 def draw_board(board)
+  system 'clear'
   puts
   puts " #{board[1]} | #{board[2]} | #{board[3]} "
   puts "---+---+---"
@@ -65,12 +68,13 @@ end
 
 board = initialize_board
 draw_board(board)
-
-until winner_check(board) || game_over?(board)
+begin
   player_turn(board)
   draw_board(board)
-  winner_check(board)
   computer_turn(board)
   draw_board(board)
-  winner_check(board)
+  winner = winner_check(board)
+end until winner || game_over?(board)
+if game_over?
+  puts "It's a tie! Try again."
 end
